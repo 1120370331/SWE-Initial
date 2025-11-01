@@ -1,5 +1,6 @@
 # Repository Guidelines
 (本文件与CLAUDE.md永久同步)
+test
 ## Memories 文件管理
 `./.memories/`（下文简称 `./memories/`）存放团队共享的“记忆”资料，用于速记业务背景与开发决策。开工前先读相关模块，收工后同步更新，保持资料实时。
 
