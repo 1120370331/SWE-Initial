@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+
+find_python() {
+  if command -v python3 >/dev/null 2>&1; then
+    printf 'python3'
+    return 0
+  fi
+  if command -v python >/dev/null 2>&1; then
+    printf 'python'
+    return 0
+  fi
+  return 1
+}
+
+PY_CMD=$(find_python) || {
+  printf >&2 'mirror-sync hook: unable to find python interpreter\n'
+  exit 1
+}
+
+"$PY_CMD" "$repo_root/scripts/mirror_sync.py"
