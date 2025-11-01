@@ -1,19 +1,21 @@
 # Repository Guidelines
 
 ## Memories 文件管理
-`./memories/` 存放团队共享的“记忆”资料，用于速记业务背景与开发决策。开工前先读相关模块，收工后同步更新，保持资料实时。
+`./.memories/`（下文简称 `./memories/`）存放团队共享的“记忆”资料，用于速记业务背景与开发决策。开工前先读相关模块，收工后同步更新，保持资料实时。
 
-- **目录结构**：每个模块位于 `memories/modules/<业务-主题>/`，命名采用小写加连字符。
+- **目录结构**：每个模块位于 `./memories/modules/<业务-主题>/`，命名采用小写加连字符。
 - **必备文件**：
   - `README.md` — 模块导航，列出 FUNCTION 文档及其他资料。
   - `PRD.md` — 产品/业务目标、用户场景与边界假设。
-  - `FUNCTION-*.md` — 单个函数、脚本或流程的说明文档，可按需创建多个。
+  - `FUNCTION-*.md` — 单个函数、脚本或流程的说明文档，可按需创建多个。在这里，需要你结合实际的代码情况，介绍业务的实现逻辑，并嵌入关键代码片段便于速查。
 - **操作流程**：
   1. 开始任务前，先阅读模块 `README.md`，再按需查看 `PRD.md` 与相关 `FUNCTION-*.md`。
   2. 任务完成后，补充新的决策、假设、数据位置或遗留问题。
   3. 新增模块时，复制 `.memories/templates/module/` 模板并填写，再在 `modules/INDEX.md` 登记。
   4. 需要速查记忆内容时，执行 `sh .memories/scripts/memories-lookup.sh <关键字>`，或在 Windows 环境使用 `.memories\scripts\memories-lookup.cmd <关键字>`，均支持 `--list-modules` 查看模块清单。
 
+## Tools 开发工具
+`./.tools/` 存放辅助脚本与诊断工具。例如 `runtime_monitor/` 目录下的说明可帮助排查运行时异常，使用前先阅读对应 README。
 ## Project Structure & Module Organization
 Keep reusable Python code in `src/` and expose entry points through `src/__init__.py` for clean imports. Exploratory notebooks live in `notebooks/` with numbered prefixes (for example `01-demand-baseline.ipynb`) so progress reads chronologically. Store input spreadsheets under `data/raw/` and model-ready tables in `data/processed/`; never commit personally identifiable information. Generated figures and reports belong in `reports/` to keep outputs reproducible. Place automated checks in `tests/`, mirroring the package structure to simplify discovery.
 
