@@ -1,0 +1,67 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+MANIFEST
+
+# Environment management
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+.python-version
+
+# Testing and coverage
+.coverage
+.coverage.*
+coverage.xml
+coverage/
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.nox/
+
+# Notebooks
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Logs and tmp
+*.log
+*.tmp
+*.temp
+*.pid
+
+# Data artifacts (keep tracked placeholders)
+data/raw/
+!data/raw/.gitkeep
+data/processed/
+!data/processed/.gitkeep
+reports/
+!reports/.gitkeep
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
