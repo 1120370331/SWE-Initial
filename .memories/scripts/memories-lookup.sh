@@ -7,7 +7,7 @@ modules_dir="$(cd "$script_dir/.." && pwd)/modules"
 
 usage() {
   cat <<'EOF'
-Usage: sh .memories/scripts/memories-lookup.sh [--list-modules] <service> [keyword...]
+Usage: sh .memories/scripts/memories-lookup.sh [--list-modules] <module> [keyword...]
 
 Options:
   --list-modules   List available memory modules and exit.
@@ -15,8 +15,8 @@ Options:
 
 Notes:
   - Searches markdown files under a specific module in .memories/modules.
-  - Service name is required; use --list-modules to discover available options.
-  - Omit keywords to list markdown files for the chosen service.
+  - Module name is required; use --list-modules to discover available options.
+  - Omit keywords to list markdown files for the chosen module.
 EOF
 }
 
@@ -29,7 +29,7 @@ list_modules() {
 }
 
 search_memories() {
-  local service=$1
+  local module=$1
   local target_dir=$2
   shift 2
   local prefix="${modules_dir%/}/"
@@ -43,7 +43,7 @@ search_memories() {
       printf '%s\n' "$rel"
     done < <(find "$target_dir" -type f -name "*.md" | sort)
     if [ "$found" = false ]; then
-      echo "No markdown files found under service $service."
+      echo "No markdown files found under module $module."
     fi
     return 0
   fi
@@ -77,7 +77,7 @@ search_memories() {
 }
 
 if [ $# -eq 0 ]; then
-  echo "Missing required service argument. Use --list-modules to inspect available modules." >&2
+  echo "Missing required module argument. Use --list-modules to inspect available modules." >&2
   usage
   exit 2
 fi
@@ -93,13 +93,13 @@ case "$1" in
     ;;
 esac
 
-service=$1
+module=$1
 shift
-target_dir="$modules_dir/$service"
+target_dir="$modules_dir/$module"
 
 if [ ! -d "$target_dir" ]; then
-  echo "Service module not found: $service" >&2
+  echo "Memory module not found: $module" >&2
   exit 2
 fi
 
-search_memories "$service" "$target_dir" "$@"
+search_memories "$module" "$target_dir" "$@"

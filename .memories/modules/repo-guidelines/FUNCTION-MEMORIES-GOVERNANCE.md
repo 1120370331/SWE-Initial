@@ -11,7 +11,7 @@
 | 步骤 | 代码位置 | 业务说明 |
 | --- | --- | --- |
 | 1 | `AGENTS.md` | 代理在领取任务前阅读“Memories 文件管理”章节，确认必须执行的治理动作。 |
-| 2 | `.memories/scripts/memories-lookup.sh` / `.memories/scripts/memories-lookup.cmd` | 传入模块目录名（service）执行检索；关键字可选，缺省时列出该模块的 Markdown 文件；`--list-modules` 可列出支持的模块。 |
+| 2 | `.memories/scripts/memories-lookup.sh` / `.memories/scripts/memories-lookup.cmd` | 传入模块目录名执行检索；关键字可选，缺省时列出该模块的 Markdown 文件；`--list-modules` 可列出支持的模块。 |
 | 3 | `.memories/modules/<module>/README.md` | 从模块导航获取本任务需要的 FUNCTION 文档与补充资料清单。 |
 | 4 | `.memories/modules/<module>/PRD.md` | 理解业务目标、用户场景与边界条件，核对是否有新假设。 |
 | 5 | `.memories/modules/<module>/FUNCTION-*.md` | 核对具体函数/脚本的实现逻辑与约束，确认与代码保持一致。 |
@@ -21,7 +21,7 @@
 ### 关键代码片段
 ```bash
 search_memories() {
-  local service=$1
+  local module=$1
   local target_dir=$2
   shift 2
   local prefix="${modules_dir%/}/"
@@ -35,7 +35,7 @@ search_memories() {
       printf '%s\n' "$rel"
     done < <(find "$target_dir" -type f -name "*.md" | sort)
     if [ "$found" = false ]; then
-      echo "No markdown files found under service $service."
+      echo "No markdown files found under module $module."
     fi
     return 0
   fi
