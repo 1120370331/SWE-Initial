@@ -12,6 +12,7 @@
   1. 开始任务前，先阅读模块 `README.md`，再按需查看 `PRD.md` 与相关 `FUNCTION-*.md`。
   2. 任务完成后，补充新的决策、假设、数据位置或遗留问题。
   3. 新增模块时，复制 `.memories/templates/module/` 模板并填写，再在 `modules/INDEX.md` 登记。
+  4. 需要速查记忆内容时，执行 `sh .memories/scripts/memories-lookup.sh <关键字>`，或在 Windows 环境使用 `.memories\scripts\memories-lookup.cmd <关键字>`，均支持 `--list-modules` 查看模块清单。
 
 ## Project Structure & Module Organization
 Keep reusable Python code in `src/` and expose entry points through `src/__init__.py` for clean imports. Exploratory notebooks live in `notebooks/` with numbered prefixes (for example `01-demand-baseline.ipynb`) so progress reads chronologically. Store input spreadsheets under `data/raw/` and model-ready tables in `data/processed/`; never commit personally identifiable information. Generated figures and reports belong in `reports/` to keep outputs reproducible. Place automated checks in `tests/`, mirroring the package structure to simplify discovery.

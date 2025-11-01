@@ -16,6 +16,7 @@
 
 ## 3. 实现要点
 - 任务前必须阅读相关模块 `README.md`，按需补充 `PRD.md` 与 FUNCTION 文档。
+- 进行记忆检索时，优先使用 `sh .memories/scripts/memories-lookup.sh <关键字>`（或 `.memories\scripts\memories-lookup.cmd <关键字>`）提高查找效率，可配合 `--list-modules` 快速浏览模块。
 - 任务结束后同步记录关键调整，必要时创建或扩展模块确保信息可检索。
 - 新增模块需复制 `.memories/templates/module/` 模板并登记 INDEX。
 
