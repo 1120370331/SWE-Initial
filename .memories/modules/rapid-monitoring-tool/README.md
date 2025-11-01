@@ -6,14 +6,17 @@
 ## 快速导航
 - [产品逻辑（PRD）](PRD.md)
 - 功能文档：
-  - （待补充）日志采集规范
-  - （待补充）CLI 脚本使用手册
+  - [FUNCTION-check-log](FUNCTION-check-log.md) — 检索脚本流程与关键实现
+  - [FUNCTION-manage-log](FUNCTION-manage-log.md) — 清理/归档脚本流程与关键实现
 
 ## 目录结构
 ```
 rapid-monitoring-tool/
-|-- README.md
-`-- PRD.md
+|-- README.md                # 工具使用说明与示例命令
+|-- PRD.md                   # 业务背景、需求边界
+|-- FUNCTION-check-log.md
+|-- FUNCTION-manage-log.md
+`-- （工具实现）../.tools/runtime_monitor/
 ```
 
 ## 维护约定
@@ -23,8 +26,9 @@ rapid-monitoring-tool/
 
 ## 最近更新
 - 2025-11-01：初始化模块与 PRD 草案 — @codex
+- 2025-11-01：落地 Bash/CMD 脚本，补充 FUNCTION 文档与示例日志 — @codex
+- 2025-11-01：完善 FUNCTION 记忆，收录日期解析、覆盖写入与归档追加等实现细节 — @codex
 
 ## 待办与风险
-- [ ] 补充 CLI 使用 FUNCTION 文档
-- [ ] 明确日志命名与模块映射关系
-- ⚠️ 若日志目录未统一维护将导致工具输出不稳定
+- [ ] 补充日志采集规范（统一外部服务落盘策略）
+- ⚠️ 若新增服务未维护 `.tools/runtime_monitor/logs/<service>/index.json`，日期映射将依赖命名约定

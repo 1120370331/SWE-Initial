@@ -16,6 +16,12 @@
 
 ## Tools 开发工具
 `./.tools/` 存放辅助脚本与诊断工具。例如 `runtime_monitor/` 目录下的说明可帮助排查运行时异常，使用前先阅读对应 README。
+
+### Rapid Monitoring Tool 快速上手
+- 定位日志：`.\.tools\runtime_monitor\check_log.cmd --service <name> [--date today|d7|2025-11-02] [--tail 50|--start 10 --end 200] [--keyword ERROR] [--regex 'WARN|ERROR']`；Bash 版本位于 `./.tools/runtime_monitor/check_log.sh`。
+- 清理或归档：`.\.tools\runtime_monitor\manage_log.cmd --service <name> [--clear --before d30 --keep-latest 1 --max-size 50MB] [--zip weekly-bundle --from d7 --to today --append] [--dry-run]`。
+- 如日志不在仓库示例目录，可先设置 `RAPID_LOGS_ROOT`（Windows：`set RAPID_LOGS_ROOT=D:\logs`，Bash：`export RAPID_LOGS_ROOT=/var/log/custom`）。
+- 实际删除或打包前建议先加 `--dry-run` 核对计划操作。
 ## Project Structure & Module Organization
 Keep reusable Python code in `src/` and expose entry points through `src/__init__.py` for clean imports. Exploratory notebooks live in `notebooks/` with numbered prefixes (for example `01-demand-baseline.ipynb`) so progress reads chronologically. Store input spreadsheets under `data/raw/` and model-ready tables in `data/processed/`; never commit personally identifiable information. Generated figures and reports belong in `reports/` to keep outputs reproducible. Place automated checks in `tests/`, mirroring the package structure to simplify discovery.
 

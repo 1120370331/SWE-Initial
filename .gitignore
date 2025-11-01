@@ -39,10 +39,14 @@ htmlcov/
 notebooks/.ipynb_checkpoints/
 
 # Logs and tmp
+# Generated logs (global)
 *.log
 *.tmp
 *.temp
 *.pid
+
+# Local runtime_monitor logs (generated fixtures)
+.tools/runtime_monitor/logs/
 
 # Data artifacts (keep tracked placeholders)
 data/raw/
