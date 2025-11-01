@@ -11,8 +11,8 @@
   - [FUNCTION-MEMORIES-GOVERNANCE.md](FUNCTION-MEMORIES-GOVERNANCE.md) — 记忆文件维护与更新流程
 
 ## 常用脚本
-- 记忆速查（Unix）：`sh .memories/scripts/memories-lookup.sh <关键字>`（使用 `--list-modules` 查看模块目录）
-- 记忆速查（Windows）：`.memories\scripts\memories-lookup.cmd <关键字>`（同样支持 `--list-modules`）
+- 记忆速查（Unix）：`sh .memories/scripts/memories-lookup.sh <模块目录名> [关键字...]`（`--list-modules` 可列出模块，缺少 service 参数将报错）
+- 记忆速查（Windows）：`.memories\scripts\memories-lookup.cmd <模块目录名> [关键字...]`（同样要求显式传入模块名）
 
 ## 目录结构
 ```

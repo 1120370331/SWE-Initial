@@ -12,7 +12,7 @@
   1. 开始任务前，先阅读模块 `README.md`，再按需查看 `PRD.md` 与相关 `FUNCTION-*.md`。
   2. 任务完成后，补充新的决策、假设、数据位置或遗留问题。
   3. 新增模块时，复制 `.memories/templates/module/` 模板并填写，再在 `modules/INDEX.md` 登记。
-  4. 需要速查记忆内容时，执行 `sh .memories/scripts/memories-lookup.sh <关键字>`，或在 Windows 环境使用 `.memories\scripts\memories-lookup.cmd <关键字>`，均支持 `--list-modules` 查看模块清单。
+  4. 需要速查记忆内容时，执行 `sh .memories/scripts/memories-lookup.sh <模块目录名> [关键字...]`；Windows 环境使用 `.memories\scripts\memories-lookup.cmd <模块目录名> [关键字...]`。缺少 service 参数脚本会拒绝执行，可用 `--list-modules` 查看支持的模块列表。
 
 ## Tools 开发工具
 `./.tools/` 存放辅助脚本与诊断工具。例如 `runtime_monitor/` 目录下的说明可帮助排查运行时异常，使用前先阅读对应 README。

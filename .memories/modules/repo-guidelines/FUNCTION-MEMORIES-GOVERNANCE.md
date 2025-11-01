@@ -11,7 +11,7 @@
 | 步骤 | 代码位置 | 业务说明 |
 | --- | --- | --- |
 | 1 | `AGENTS.md` | 代理在领取任务前阅读“Memories 文件管理”章节，确认必须执行的治理动作。 |
-| 2 | `.memories/scripts/memories-lookup.sh` / `.memories/scripts/memories-lookup.cmd` | 通过 `--list-modules` 浏览目录或以关键词检索相关 FUNCTION 文档，加速定位信息。 |
+| 2 | `.memories/scripts/memories-lookup.sh` / `.memories/scripts/memories-lookup.cmd` | 传入模块目录名（service）执行检索；关键字可选，缺省时列出该模块的 Markdown 文件；`--list-modules` 可列出支持的模块。 |
 | 3 | `.memories/modules/<module>/README.md` | 从模块导航获取本任务需要的 FUNCTION 文档与补充资料清单。 |
 | 4 | `.memories/modules/<module>/PRD.md` | 理解业务目标、用户场景与边界条件，核对是否有新假设。 |
 | 5 | `.memories/modules/<module>/FUNCTION-*.md` | 核对具体函数/脚本的实现逻辑与约束，确认与代码保持一致。 |
@@ -20,28 +20,32 @@
 
 ### 关键代码片段
 ```bash
-# 来自 .memories/scripts/memories-lookup.sh#L28-L58，用于列出模块并按关键字检索
-list_modules() {
-  if [ ! -d "$modules_dir" ]; then
-    echo "Memories modules directory not found: $modules_dir" >&2
-    exit 2
-  fi
-  find "$modules_dir" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | sort
-}
-
 search_memories() {
+  local service=$1
+  local target_dir=$2
+  shift 2
+  local prefix="${modules_dir%/}/"
+
   if [ $# -eq 0 ]; then
-    echo "Provide at least one keyword or use --list-modules." >&2
-    usage
-    exit 2
+    local found=false
+    local rel
+    while IFS= read -r path; do
+      found=true
+      rel="${path#$prefix}"
+      printf '%s\n' "$rel"
+    done < <(find "$target_dir" -type f -name "*.md" | sort)
+    if [ "$found" = false ]; then
+      echo "No markdown files found under service $service."
+    fi
+    return 0
   fi
 
   if command -v rg >/dev/null 2>&1; then
-    args=()
+    local -a args=()
     for keyword in "$@"; do
       args+=("-e" "$keyword")
     done
-    rg --color=always --line-number --ignore-case --fixed-strings "${args[@]}" "$modules_dir" || {
+    rg --color=always --line-number --ignore-case --fixed-strings "${args[@]}" "$target_dir" || {
       echo "No matches." >&2
       exit 1
     }
@@ -49,11 +53,11 @@ search_memories() {
   fi
 
   if command -v grep >/dev/null 2>&1; then
-    args=()
+    local -a args=()
     for keyword in "$@"; do
       args+=("-e" "$keyword")
     done
-    grep -RIn --color=always -F "${args[@]}" "$modules_dir" || {
+    grep -RIn --color=always -F "${args[@]}" "$target_dir" || {
       echo "No matches." >&2
       exit 1
     }

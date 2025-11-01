@@ -5,7 +5,7 @@
 ## 使用流程
 - **工作前**：通过`modules/`目录快速定位相关模块，先读模块`README.md`，再按需查看`PRD.md`与对应的`FUNCTION*.md`。
 - **工作后**：更新受影响的记忆文件，记录关键决策、假设、数据位置与遗留问题。
-- **速查脚本**：使用 `sh .memories/scripts/memories-lookup.sh <关键字>` 或 `.memories\scripts\memories-lookup.cmd <关键字>` 快速检索记忆内容，可追加 `--list-modules` 查看模块清单。
+- **速查脚本**：使用 `sh .memories/scripts/memories-lookup.sh <模块目录名> [关键字...]` 或 `.memories\scripts\memories-lookup.cmd <模块目录名> [关键字...]` 进行检索；`--list-modules` 可列出全部模块，缺少 `service` 参数时脚本会报错提示。
 - **新增模块**：复制`templates/module/`下的模板，按照命名规范创建新的模块文件夹并补全字段。
 
 ## 目录约定

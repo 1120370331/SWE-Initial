@@ -7,15 +7,16 @@ modules_dir="$(cd "$script_dir/.." && pwd)/modules"
 
 usage() {
   cat <<'EOF'
-Usage: sh .memories/scripts/memories-lookup.sh [--list-modules] <keyword> [keyword...]
+Usage: sh .memories/scripts/memories-lookup.sh [--list-modules] <service> [keyword...]
 
 Options:
   --list-modules   List available memory modules and exit.
   --help           Show this help message.
 
 Notes:
-  - Searches all markdown files under .memories/modules.
-  - Requires at least one keyword unless --list-modules is used.
+  - Searches markdown files under a specific module in .memories/modules.
+  - Service name is required; use --list-modules to discover available options.
+  - Omit keywords to list markdown files for the chosen service.
 EOF
 }
 
@@ -28,18 +29,31 @@ list_modules() {
 }
 
 search_memories() {
+  local service=$1
+  local target_dir=$2
+  shift 2
+  local prefix="${modules_dir%/}/"
+
   if [ $# -eq 0 ]; then
-    echo "Provide at least one keyword or use --list-modules." >&2
-    usage
-    exit 2
+    local found=false
+    local rel
+    while IFS= read -r path; do
+      found=true
+      rel="${path#$prefix}"
+      printf '%s\n' "$rel"
+    done < <(find "$target_dir" -type f -name "*.md" | sort)
+    if [ "$found" = false ]; then
+      echo "No markdown files found under service $service."
+    fi
+    return 0
   fi
 
   if command -v rg >/dev/null 2>&1; then
-    args=()
+    local -a args=()
     for keyword in "$@"; do
       args+=("-e" "$keyword")
     done
-    rg --color=always --line-number --ignore-case --fixed-strings "${args[@]}" "$modules_dir" || {
+    rg --color=always --line-number --ignore-case --fixed-strings "${args[@]}" "$target_dir" || {
       echo "No matches." >&2
       exit 1
     }
@@ -47,11 +61,11 @@ search_memories() {
   fi
 
   if command -v grep >/dev/null 2>&1; then
-    args=()
+    local -a args=()
     for keyword in "$@"; do
       args+=("-e" "$keyword")
     done
-    grep -RIn --color=always -F "${args[@]}" "$modules_dir" || {
+    grep -RIn --color=always -F "${args[@]}" "$target_dir" || {
       echo "No matches." >&2
       exit 1
     }
@@ -63,6 +77,7 @@ search_memories() {
 }
 
 if [ $# -eq 0 ]; then
+  echo "Missing required service argument. Use --list-modules to inspect available modules." >&2
   usage
   exit 2
 fi
@@ -78,4 +93,13 @@ case "$1" in
     ;;
 esac
 
-search_memories "$@"
+service=$1
+shift
+target_dir="$modules_dir/$service"
+
+if [ ! -d "$target_dir" ]; then
+  echo "Service module not found: $service" >&2
+  exit 2
+fi
+
+search_memories "$service" "$target_dir" "$@"
