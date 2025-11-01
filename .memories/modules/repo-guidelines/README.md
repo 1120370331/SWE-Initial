@@ -9,6 +9,7 @@
 - [产品逻辑（PRD）](PRD.md)
 - 功能文档：
   - [FUNCTION-MEMORIES-GOVERNANCE.md](FUNCTION-MEMORIES-GOVERNANCE.md) — 记忆文件维护与更新流程
+  - [FUNCTION-MIRROR-HOOK.md](FUNCTION-MIRROR-HOOK.md) — 镜像文件自动同步钩子说明
 
 ## 常用脚本
 - 记忆速查（Unix）：`sh .memories/scripts/memories-lookup.sh <模块目录名> [关键字...]`（`--list-modules` 可列出模块，缺少 module 参数将报错）

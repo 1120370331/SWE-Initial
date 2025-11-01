@@ -1,0 +1,2 @@
+# Mirror sync: prefer resolving secondary copies using current branch to avoid duplicate conflicts
+CLAUDE.md merge=ours

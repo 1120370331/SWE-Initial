@@ -21,3 +21,18 @@ SWE 开发项目模板，内置记忆协作规范与常用诊断脚本，方便�
 - **环境变量**：如日志不位于仓库示例目录，设置 `RAPID_LOGS_ROOT`（Bash：`export RAPID_LOGS_ROOT=/var/log/custom`，Windows：`set RAPID_LOGS_ROOT=D:\logs`）让脚本指向真实路径。
 - **使用教程**：详尽步骤与注意事项已收录在 `.tools/runtime_monitor/README.md` 的“使用教程”章节，首次接入时请完整阅读。
 - 更多背景与迭代记录可在 `.memories/modules/rapid-monitoring-tool/` 中查阅。
+
+## Git Hooks & Mirror Sync
+- **启用方式**：运行 `pwsh scripts/install-hooks.ps1`（Windows）或 `sh scripts/install_hooks.sh`（macOS/Linux）即可将 `core.hooksPath` 指向 `.githooks`；若需手动操作，可执行 `git config core.hooksPath .githooks`。
+- **自动同步**：`pre-commit` 钩子会调用 `scripts/mirror_sync.sh`，对 `config/mirror_sync.conf` 中声明的镜像文件组逐一检查；任意成员更新后，钩子会以最近修改的文件为源覆盖其余成员并重新 `git add`，确保在提交前保持一致。
+- **配置格式**：`config/mirror_sync.conf` 每行表示一个镜像组，使用空格分隔仓库相对路径；支持加入注释（以 `#` 开头）与空行跳过。
+- **删除语义**：若组内所有文件都被删除，钩子会统一 `git add` 以记录删除；如只删除部分文件，脚本会自动还原缺失文件，避免半同步状态。
+- **部署脚本**：首次克隆后执行上述脚本，后续新增的钩子拷贝至 `.githooks/` 会自动生效。
+- **合并体验**：脚本在检测到未解决的冲突时会自动跳过，避免干扰手工合并；同时 `.gitattributes` 将镜像组中的次要文件标记为 `merge=ours`（例如 `CLAUDE.md`），确保只需处理一次冲突，待合并完成后钩子会再次同步副本。新增镜像文件时别忘了同步更新 `.gitattributes`。
+
+## 人类工程师使用指南
+- **先读规则再派活**：本仓库的 `AGENTS.md`、`CLAUDE.md` 以及各模块记忆文件是给 AI 代理的工作约束。人类在分配任务前需快速浏览对应模块的 `README.md`、`PRD.md` 与 `FUNCTION-*.md`，确认已有约定与边界是否覆盖当前需求。
+- **准备高质量指令**：向 AI 下达任务时，明确业务上下文、输入输出路径、禁止触碰的文件以及可复用脚本。引用仓库中的现有流程（如 `.memories/scripts/` 或 `scripts/` 下的工具），通过链接或路径让 AI 精确定位资料。
+- **要求计划与校验**：指导 AI 在动手前产出执行计划，并在关键步骤（例如改动核心逻辑或批量文件）前停下来等待人类确认。执行后要求说明变更位置、影响范围以及验证方式。
+- **同步决策与知识**：完成协作后，人工负责更新对应模块的记忆文档，记录新的假设、接口变更或遗留风险，确保下次 AI 能直接继承背景信息。
+- **审阅与回归**：对 AI 提交的修改进行人工审查，必要时运行 `pytest`、专用脚本或手工验收。长周期任务应建立检查清单，确保模型升级或知识库扩写时不会出现规约偏差。
