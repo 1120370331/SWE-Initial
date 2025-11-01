@@ -10,6 +10,12 @@ if [ ! -f "$config_path" ]; then
   exit 0
 fi
 
+conflicts="$(git diff --name-only --diff-filter=U || true)"
+if [ -n "$conflicts" ]; then
+  printf '%s\n' "mirror-sync: skip (resolve merge conflicts before syncing)" >&2
+  exit 0
+fi
+
 changed_tmp="$(mktemp)"
 cleanup() {
   rm -f "$changed_tmp"
